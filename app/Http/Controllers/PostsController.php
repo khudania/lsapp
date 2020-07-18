@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+// use DB;
 
 class PostsController extends Controller
 {
@@ -15,7 +16,12 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // $posts = Post::all(); //Get All the data
+        // $posts = Post::orderBy('title', 'desc')->get(); //Get all post with order
+        $posts = Post::orderBy('title', 'desc')->paginate(10); //Get all post with order
+        // $posts = Post::orderBy('title', 'desc')->take(1)->get(); //Get all post with order
+        // $posts = Post::where('title', 'Post Two')->get(); //Using Where Clause
+        // $posts = DB::select('SELECT * FROM posts'); //using normal db without eloquent
         return view('posts.index')->with('posts', $posts);
     }
 
@@ -48,7 +54,8 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        return view('posts.show')->with('post', $post);
     }
 
     /**
